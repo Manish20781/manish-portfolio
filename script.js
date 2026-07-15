@@ -83,6 +83,8 @@ function typewrite() {
 typewrite();
 
 // ===== FADE IN ON SCROLL =====
+document.documentElement.classList.add('js-loaded');
+
 const fadeEls = document.querySelectorAll('.fade-in');
 
 function revealFadeElements() {
