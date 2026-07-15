@@ -84,6 +84,17 @@ typewrite();
 
 // ===== FADE IN ON SCROLL =====
 const fadeEls = document.querySelectorAll('.fade-in');
+
+function revealFadeElements() {
+  fadeEls.forEach((el, i) => {
+    if (el.classList.contains('visible')) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) {
+      setTimeout(() => el.classList.add('visible'), i * 60);
+    }
+  });
+}
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
     if (entry.isIntersecting) {
@@ -93,9 +104,19 @@ const observer = new IntersectionObserver((entries) => {
       observer.unobserve(entry.target);
     }
   });
-}, { threshold: 0.1 });
+}, { threshold: 0.05, rootMargin: '80px 0px' });
 
 fadeEls.forEach(el => observer.observe(el));
+
+window.addEventListener('load', revealFadeElements);
+window.addEventListener('scroll', revealFadeElements, { passive: true });
+window.addEventListener('hashchange', () => setTimeout(revealFadeElements, 350));
+window.addEventListener('resize', revealFadeElements);
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(revealFadeElements, 50);
+  setTimeout(revealFadeElements, 400);
+});
+setTimeout(revealFadeElements, 100);
 
 // ===== COUNTER ANIMATION =====
 function animateCounter(el, target) {
